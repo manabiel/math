@@ -1,0 +1,149 @@
+/* マナビエル LP — base styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700;900&display=swap');
+
+:root {
+  --bg: #fafaf7;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-mute: #7a7a7a;
+  --line: #e6e3dc;
+  --paper: #ffffff;
+
+  /* accents — soft blue / green / orange */
+  --blue:   #2D6CDF;
+  --blue-soft: #e8efff;
+  --green:  #3FA776;
+  --green-soft: #e6f4ec;
+  --orange: #E8825A;
+  --orange-soft: #fdeee5;
+
+  --hand: var(--orange);
+
+  --font-sans: 'Zen Kaku Gothic New', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  --font-head: 'Zen Kaku Gothic New', 'Noto Sans JP', system-ui, sans-serif;
+  --font-serif: 'Noto Serif JP', 'YuMincho', 'Hiragino Mincho ProN', serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "palt";
+}
+
+body { overflow-x: hidden; }
+
+a { color: inherit; }
+button { font-family: inherit; }
+
+/* ── reveal on scroll ─────────────────────────── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.no-anim { transition: none !important; opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: .08s; }
+.reveal-d2 { transition-delay: .16s; }
+.reveal-d3 { transition-delay: .24s; }
+.reveal-d4 { transition-delay: .32s; }
+.reveal-d5 { transition-delay: .40s; }
+.reveal-d6 { transition-delay: .48s; }
+
+/* ── handwriting accents (CSS-driven SVG strokes) ─ */
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+.hand-circle path,
+.hand-underline path,
+.hand-arrow path,
+.hand-check path,
+.hand-loop path,
+.hand-bracket path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.in .hand-circle path,
+.in .hand-underline path,
+.in .hand-arrow path,
+.in .hand-check path,
+.in .hand-loop path,
+.in .hand-bracket path {
+  animation: draw 1.6s cubic-bezier(.6,.1,.3,1) forwards;
+}
+
+/* ── focus ring ───────────────────────────────── */
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+
+/* ── scrollbar styling for inner scroll regions ── */
+.scroll-area::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 4px; }
+.scroll-area::-webkit-scrollbar-track { background: transparent; }
+
+/* ── grain texture overlay ────────────────────── */
+.grain::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(0,0,0,.025) 1px, transparent 1.4px);
+  background-size: 3px 3px; mix-blend-mode: multiply; opacity: .4;
+}
+
+/* ── prevent text selection on decorative ─────── */
+.deco { user-select: none; pointer-events: none; }
+
+/* dotted grid bg */
+.dot-grid {
+  background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* selection */
+::selection { background: var(--orange); color: #fff; }
+
+/* ── responsive: tighten desktop layouts on mobile ─ */
+@media (max-width: 760px) {
+  /* sections — reduce horizontal padding */
+  section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  /* nav links: hide all but the CTA button */
+  header nav a { display: none !important; }
+  header nav button { padding: 9px 14px !important; font-size: 12.5px !important; }
+
+  /* the few hard-coded 2-col grids → single column */
+  .two-col-stack {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .two-col-stack .stack-img {
+    max-width: 280px !important;
+    margin: 0 auto !important;
+  }
+  /* hero: bigger top padding for breathing room */
+  .hero-section { padding-top: 56px !important; padding-bottom: 56px !important; }
+  /* big number cards: shrink */
+  .price-num { font-size: 38px !important; }
+  /* section vertical padding */
+  .sec-vpad { padding-top: 72px !important; padding-bottom: 72px !important; }
+  /* sticky CTA leaves room */
+  body { padding-bottom: 80px; }
+  /* faq question font */
+  .faq-q { font-size: 15.5px !important; }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .sec-vpad { padding-top: 56px !important; padding-bottom: 56px !important; }
+  /* tab buttons: stack tight */
+  .grade-tab { padding: 12px 14px !important; font-size: 14px !important; }
+}

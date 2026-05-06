@@ -102,7 +102,7 @@ function PriceSection() {
   ];
   const extras = [
     ['入塾金', '15,000円＋税'],
-    ['諸経費', '年間 2,000円＋税'],
+    ['諸経費', '月間 2,000円＋税'],
   ];
   return (
     <section data-screen-label="08 料金" id="price" className="sec-vpad" style={{

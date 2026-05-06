@@ -1,7 +1,6 @@
 // form.jsx — マナビエル 無料体験申し込みフォーム
 
-const NETLIFY_FORM_NAME = 'free-trial';
-const NETLIFY_FORM_ACTION = '/contact.html';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mojrwnko';
 
 const GRADE_OPTIONS = [
   { value: '', label: '選択してください' },
@@ -209,11 +208,14 @@ function ContactForm() {
     setSubmitting(true);
     try {
       const formData = new FormData(e.currentTarget);
-      const res = await fetch(NETLIFY_FORM_ACTION, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString(),
-      });
+
+const res = await fetch(FORMSPREE_ENDPOINT, {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+  },
+  body: formData,
+});
       if (res.ok) {
         window.location.href = 'thanks.html';
       } else {
@@ -226,12 +228,8 @@ function ContactForm() {
   };
 
   return (
-    <form name={NETLIFY_FORM_NAME} method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleSubmit} noValidate>
-      <input type="hidden" name="form-name" value={NETLIFY_FORM_NAME} />
-      <p style={{ display: 'none' }}>
-        <label>入力しないでください：<input name="bot-field" tabIndex="-1" autoComplete="off" /></label>
-      </p>
-
+<form onSubmit={handleSubmit} noValidate>
+  
       {/* 保護者氏名 */}
       <div data-err={errors.parentName ? '1' : '0'}>
         <Field label="保護者さまのお名前" required error={errors.parentName}>
